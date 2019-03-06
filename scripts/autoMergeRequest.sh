@@ -5,15 +5,22 @@
 # Look which is the default branch
 TARGET_BRANCH=`curl --silent "${HOST}${CI_PROJECT_ID}" --header "PRIVATE-TOKEN:${PRIVATE_TOKEN}" | python3 -c "import sys, json; print(json.load(sys.stdin)['default_branch'])"`;
 
-# The description of our new MR, we want to remove the branch after the MR has
-# been closed
+# Query the commit details to match the commit author to a project member
+authorName=$(curl --header "PRIVATE-TOKEN: ${PRIVATE_TOKEN}" "https://gitlab.com/api/v4/projects/${CI_PROJECT_ID}/repository/commits/${CI_COMMIT_SHA}" | jq .author_name)
+echo "Author: $authorName"
+authorId="$(echo "$(curl --header "PRIVATE-TOKEN: $PRIVATE_TOKEN" "https://gitlab.com/api/v4/projects/$CI_PROJECT_ID/members/all")" | jq -c ".[] | select(.name | . and contains($authorName)) | .id")"
+echo "User: $authorId" 
+mergeOwnerId=${authorId:-${GITLAB_USER_ID:-default}}
+echo "Merge Request Owner: $mergeOwnerId"
+
+# The description of our new MR, we want to remove the branch after the MR has been closed
 BODY="{
     \"id\": ${CI_PROJECT_ID},
     \"source_branch\": \"${CI_COMMIT_REF_NAME}\",
     \"target_branch\": \"${TARGET_BRANCH}\",
     \"remove_source_branch\": true,
     \"title\": \"${CI_COMMIT_REF_NAME}\",
-    \"assignee_id\":\"${GITLAB_USER_ID}\"
+    \"assignee_id\":\"3611454\"
 }";
 
 # Require a list of all the merge request and take a look if there is already

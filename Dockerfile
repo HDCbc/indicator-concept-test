@@ -6,5 +6,6 @@ RUN apk update && \
     apk add python3 && \
     apk add curl && \
     apk add bash && \
+    apk add jq && \
     apk add postgresql-client && \
     chmod +x /scripts/autoMergeRequest.sh
