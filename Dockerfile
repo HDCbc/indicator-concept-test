@@ -1,6 +1,6 @@
 FROM alpine:latest
 
-ADD ./scripts/autoMergeRequest.sh /scripts/autoMergeRequest.sh
+ADD ./scripts/ /scripts/
 RUN apk update && \
     apk add git && \
     apk add python3 && \
@@ -8,4 +8,5 @@ RUN apk update && \
     apk add bash && \
     apk add jq && \
     apk add postgresql-client && \
-    chmod +x /scripts/autoMergeRequest.sh
+    apk add openssh && \
+    chmod +x /scripts/*.sh

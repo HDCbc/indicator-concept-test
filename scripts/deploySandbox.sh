@@ -3,7 +3,7 @@
 ip="66.70.138.146"
 
 
-socket=$(mktemp -t deploy-ssh-socket.XXX)
+socket=$(mktemp -t deploy-ssh-socket.XXXXXX)
 rm -f ${socket} # delete socket file so path can be used by ssh
 
 exit_code=0
