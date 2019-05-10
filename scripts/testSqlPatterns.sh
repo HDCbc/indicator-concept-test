@@ -35,8 +35,7 @@ else
 fi
 
 # Ensure that all measurement functions match the common parameter pattern "indicator.meas_X*(p_clinic....) RETURNS record"
-if grep -iq "CREATE OR REPLACE FUNCTION indicator." update-script.sql | grep -v 'CREATE OR REPLACE FUNCTION indicator.hdcc_[0-9]*[umf]*[0-9]*(p_clinic_reference text, p_practitioner_msp text, p_effective_date date,
- OUT v_numerator integer\[\], OUT v_denominator integer\[\], OUT v_count integer\[\]'; then 
+if grep -i "CREATE OR REPLACE FUNCTION indicator." update-script.sql | grep -i -v 'CREATE OR REPLACE FUNCTION indicator.meas_[0-9]*[umf]*[0-9]*(p_clinic_reference text, p_practitioner_msp text, p_effective_date date, OUT v_numerator integer\[\], OUT v_denominator integer\[\], OUT v_count integer\[\]'; then 
     echo "Functions with wrong parameter signatures.  Every function must have the parameters '(p_clinic_reference text, p_practitioner_msp text, p_effective_date date, OUT v_numerator integer[], OUT v_denominator integer[], OUT v_count integer[])'"
     exit 1
 else 
