@@ -13,9 +13,7 @@ echo "$(echo "INSERT INTO endpoint_update(id, effective_date, statement, signatu
 echo "Copy script to db container and run"
 
 docker cp /hdc/scripts/update-script.sql db:/update-script.sql
-docker exec db psql -v ON_ERROR_STOP=1 -U postgres -f "/update-script.sql" central
-
-docker exec db psql -v ON_ERROR_STOP=1 -U postgres -c 'select * from purge_pre_tally()' central;
+docker exec db psql -v ON_ERROR_STOP=1 -U postgres -f "/update-script.sql" central;
 
 ENDSSH
 
